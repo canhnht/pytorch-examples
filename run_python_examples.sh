@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # This script runs through the code in each of the python examples.
 # The purpose is just as an integrtion test, not to actually train
@@ -174,7 +174,7 @@ fi
 if [ "" == "$ERRORS" ]; then
   tput setaf 2
   echo "Completed successfully"
-else 
+else
   tput setaf 1
   echo "Some examples failed:"
   printf "$ERRORS"
