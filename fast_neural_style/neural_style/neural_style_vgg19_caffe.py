@@ -104,7 +104,7 @@ def train(args):
         transforms.Resize(args.image_size),
         transforms.CenterCrop(args.image_size),
         transforms.ToTensor(),
-        transforms.Lambda(lambda x: x.mul(255)),
+        transforms.Lambda(lambda x: x.mul(256)),
         transforms.Lambda(lambda x: x[torch.LongTensor([2, 1, 0])]),
         transforms.Normalize(
             mean=[103.939, 116.779, 123.68], std=[1, 1, 1])
@@ -120,7 +120,7 @@ def train(args):
     vgg = Vgg19_Caffe(requires_grad=False).to(device)
     style_transform = transforms.Compose([
         transforms.ToTensor(),
-        transforms.Lambda(lambda x: x.mul(255)),
+        transforms.Lambda(lambda x: x.mul(256)),
         transforms.Lambda(lambda x: x[torch.LongTensor([2, 1, 0])]),
         transforms.Normalize(
             mean=[103.939, 116.779, 123.68], std=[1, 1, 1])
@@ -213,7 +213,7 @@ def stylize(args):
         scale=args.content_scale)
     content_transform = transforms.Compose([
         transforms.ToTensor(),
-        transforms.Lambda(lambda x: x.mul(255)),
+        transforms.Lambda(lambda x: x.mul(256)),
         transforms.Lambda(lambda x: x[torch.LongTensor([2, 1, 0])]),
         transforms.Normalize(
             mean=[103.939, 116.779, 123.68], std=[1, 1, 1])
