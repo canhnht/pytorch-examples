@@ -1,28 +1,43 @@
 #!/bin/bash
 
-CUDA_VISIBLE_DEVICES=1 python neural_style/neural_style_vgg19.py train \
-  --dataset ./dataset \
-  --style-image ./images/style-images/style-1.jpg \
-  --style-size 256 \
-  --save-model-dir ./saved_models/style-1 \
-  --checkpoint-model-dir ./saved_checkpoint/style-1 \
+CUDA_VISIBLE_DEVICES=0 python neural_style/neural_style_vgg19_caffe.py train \
+  --dataset ./dataset/coco \
+  --style-image ./images/style-images/photoac/0030.jpg \
+  --style-size 512 \
+  --save-model-dir ./saved_models/0030 \
+  --checkpoint-model-dir ./saved_checkpoint/0030 \
   --epochs 2 \
-  --batch-size 20 \
+  --batch-size 10 \
   --cuda 1 \
-  --content-weight 1.5 \
-  --style-weight 10 \
-  --lr 1 \
-  --log-interval 100
+  --log-interval 100 \
+  --content-weight 1 \
+  --style-weight 1 \
+  --lr 0.001
 
-# CUDA_VISIBLE_DEVICES=2 python neural_style/neural_style_vgg19.py train \
-#   --dataset ./dataset \
-#   --style-image ./images/style-images/style-6.jpg \
-#   --style-size 256 \
-#   --save-model-dir ./saved_models/style-6 \
-#   --checkpoint-model-dir ./saved_checkpoint/style-6 \
-#   --epochs 2 \
-#   --batch-size 10 \
-#   --cuda 1 \
-#   --log-interval 100 \
-#   --content-weight 0.05 \
-#   --style-weight  0.5
+CUDA_VISIBLE_DEVICES=1 python neural_style/neural_style_vgg19_caffe.py train \
+  --dataset ./dataset/coco \
+  --style-image ./images/style-images/photoac/0004.jpg \
+  --style-size 512 \
+  --save-model-dir ./saved_models/0004 \
+  --checkpoint-model-dir ./saved_checkpoint/0004 \
+  --epochs 2 \
+  --batch-size 10 \
+  --cuda 1 \
+  --log-interval 100 \
+  --content-weight 1 \
+  --style-weight 1 \
+  --lr 0.001
+
+CUDA_VISIBLE_DEVICES=2 python neural_style/neural_style_vgg19_caffe.py train \
+  --dataset ./dataset/coco \
+  --style-image ./images/style-images/photoac/0030.jpg \
+  --style-size 512 \
+  --save-model-dir ./saved_models/0030 \
+  --checkpoint-model-dir ./saved_checkpoint/0030 \
+  --epochs 2 \
+  --batch-size 10 \
+  --cuda 1 \
+  --log-interval 100 \
+  --content-weight 0.05 \
+  --style-weight 1000 \
+  --lr 1

@@ -8,9 +8,17 @@
 #   --output-size 512
 
 
-python neural_style/neural_style_vgg19.py eval \
-  --content-image ./images/content-images/brad_pitt.jpg \
-  --model ./saved_models/style-6/19_epoch_2_Fri_Dec_20_14:26:53_2019_0.05_0.5.model \
-  --output-image ./images/output-images/brad_pitt-19-1.jpg \
+python neural_style/neural_style_vgg19_caffe.py eval \
+  --content-image ./images/content-images/boys.jpg \
+  --model ./saved_models/0030/19_caffe_epoch_2_Thu_Dec_26_11:12:54_2019_0.05_1000.0.model \
+  --output-image ./images/output-images/boys-19caffe-3.jpg \
+  --cuda 0 \
+  --output-size 1024
+
+
+python neural_style/neural_style_vgg19_caffe.py eval \
+  --content-image ./images/content-images/boys.jpg \
+  --model ./saved_models/0004/19_caffe_epoch_2_Thu_Dec_26_11:06:28_2019_1.0_1.0.model \
+  --output-image ./images/output-images/boys-19caffe-2.jpg \
   --cuda 0 \
   --output-size 1024
