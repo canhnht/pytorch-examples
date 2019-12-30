@@ -27,7 +27,6 @@ def save_image(
 
 
 def deprocess(output_tensor):
-    print('deprocess', output_tensor)
     Normalize = transforms.Compose([transforms.Normalize(
         mean=[-103.939, -116.779, -123.68], std=[1, 1, 1])])
     bgr2rgb = transforms.Compose(
@@ -37,7 +36,6 @@ def deprocess(output_tensor):
     output_tensor = Unloader(
         bgr2rgb(Normalize(output_tensor.squeeze(0).cpu())))
     output_tensor.clamp_(0, 1)
-    print('output_tensorrrrrrr', output_tensor)
     Image2PIL = transforms.ToPILImage()
     image = Image2PIL(output_tensor.cpu())
     return image
