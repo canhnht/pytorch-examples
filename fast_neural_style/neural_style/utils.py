@@ -33,7 +33,7 @@ def deprocess(output_tensor):
     bgr2rgb = transforms.Compose(
         [transforms.Lambda(lambda x: x[torch.LongTensor([2, 1, 0])])])
     Unloader = transforms.Compose([
-        transforms.Lambda(lambda x: x.div(255))])
+        transforms.Lambda(lambda x: x.div(256))])
     output_tensor = Unloader(
         bgr2rgb(Normalize(output_tensor.squeeze(0).cpu())))
     output_tensor.clamp_(0, 1)
