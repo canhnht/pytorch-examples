@@ -41,7 +41,7 @@ CUDA_VISIBLE_DEVICES=1 python neural_style/neural_style_vgg19_caffe.py train \
   --style-weight 1 \
   --lr 0.001
 
-CUDA_VISIBLE_DEVICES=1 python neural_style/neural_style_vgg19_caffe.py train \
+CUDA_VISIBLE_DEVICES=2 python neural_style/neural_style_vgg19_caffe.py train \
   --dataset ./dataset/coco \
   --style-image ./images/style-images/photoac/0030.jpg \
   --style-size 512 \
@@ -52,4 +52,4 @@ CUDA_VISIBLE_DEVICES=1 python neural_style/neural_style_vgg19_caffe.py train \
   --cuda 1 \
   --log-interval 100 \
   --content-weight 100 \
-  --style-weight 1000
+  --style-weight 500
