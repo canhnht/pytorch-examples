@@ -18,8 +18,8 @@ python neural_style/neural_style_vgg19_caffe.py eval \
 
 python neural_style/neural_style_vgg19_caffe.py eval \
   --content-image ./images/content-images/ostagram/content-23.jpg \
-  --model ./saved_models/style-23/19_caffe_epoch_2_Tue_Dec_31_12:49:55_2019_0.5_1000.0.model \
-  --output-image ./images/output-images/content-23-19caffe-7.jpg \
+  --model ./saved_models/style-23/19_caffe_epoch_2_Tue_Dec_31_13:57:03_2019_0.5_20.0.model \
+  --output-image ./images/output-images/content-23-19caffe-9.jpg \
   --cuda 0 \
   --output-size 1024
 

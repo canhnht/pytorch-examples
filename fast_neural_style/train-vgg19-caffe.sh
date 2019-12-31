@@ -13,7 +13,7 @@ CUDA_VISIBLE_DEVICES=2 python neural_style/neural_style_vgg19_caffe.py train \
   --content-weight 5 \
   --style-weight 150
 
-CUDA_VISIBLE_DEVICES=2 python neural_style/neural_style_vgg19_caffe.py train \
+CUDA_VISIBLE_DEVICES=1 python neural_style/neural_style_vgg19_caffe.py train \
   --dataset ./dataset/coco \
   --style-image ./images/style-images/ostagram/style-23.jpg \
   --style-size 512 \
@@ -24,7 +24,7 @@ CUDA_VISIBLE_DEVICES=2 python neural_style/neural_style_vgg19_caffe.py train \
   --cuda 1 \
   --log-interval 100 \
   --content-weight 0.5 \
-  --style-weight 1000
+  --style-weight 20
 
 
 CUDA_VISIBLE_DEVICES=0 python neural_style/neural_style_vgg19_caffe.py train \

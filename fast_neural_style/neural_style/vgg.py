@@ -188,7 +188,7 @@ class Vgg19_Caffe(torch.nn.Module):
                 'relu2_1',
                 'relu3_1',
                 'relu4_1',
-                # 'relu5_1',
+                'relu5_1',
             ]
         )
         content_output_gen = namedtuple(
@@ -202,7 +202,7 @@ class Vgg19_Caffe(torch.nn.Module):
             h_relu2_1,
             h_relu3_1,
             h_relu4_1,
-            # h_relu5_1,
+            h_relu5_1,
         )
         content_output = content_output_gen(
             h_relu4_2,
