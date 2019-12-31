@@ -141,7 +141,7 @@ def train(args):
         agg_content_loss = 0.
         agg_style_loss = 0.
         count = 0
-        max_batchs = 2000
+        max_batchs = 1000
         for batch_id, (x, _) in enumerate(train_loader):
             if batch_id > max_batchs:
                 break

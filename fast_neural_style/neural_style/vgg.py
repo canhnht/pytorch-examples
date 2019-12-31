@@ -167,12 +167,6 @@ class Vgg19_Caffe(torch.nn.Module):
         if not requires_grad:
             for param in self.parameters():
                 param.requires_grad = False
-        print('slice_relu1_1', self.slice_relu1_1)
-        print('slice_relu2_1', self.slice_relu2_1)
-        print('slice_relu3_1', self.slice_relu3_1)
-        print('slice_relu4_1', self.slice_relu4_1)
-        print('slice_relu4_2', self.slice_relu4_2)
-        print('slice_relu5_1', self.slice_relu5_1)
 
     def forward(self, X):
         h = self.slice_relu1_1(X)
@@ -194,7 +188,7 @@ class Vgg19_Caffe(torch.nn.Module):
                 'relu2_1',
                 'relu3_1',
                 'relu4_1',
-                'relu5_1',
+                # 'relu5_1',
             ]
         )
         content_output_gen = namedtuple(
@@ -208,7 +202,7 @@ class Vgg19_Caffe(torch.nn.Module):
             h_relu2_1,
             h_relu3_1,
             h_relu4_1,
-            h_relu5_1,
+            # h_relu5_1,
         )
         content_output = content_output_gen(
             h_relu4_2,
