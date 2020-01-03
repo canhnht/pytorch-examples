@@ -5,7 +5,8 @@ python neural_style/neural_style_vgg19_caffe.py eval \
   --model ./saved_models/style-1/19_caffe_epoch_2_Tue_Dec_31_12:36:26_2019_0.5_10.0.model \
   --output-image ./images/output-images/content-1-19caffe-1.jpg \
   --cuda 0 \
-  --output-size 1024
+  --output-size 1024 \
+  --original-colors 1
 
 
 python neural_style/neural_style_vgg19_caffe.py eval \
@@ -17,9 +18,9 @@ python neural_style/neural_style_vgg19_caffe.py eval \
 
 
 python neural_style/neural_style_vgg19_caffe.py eval \
-  --content-image ./images/content-images/ostagram/content-23.jpg \
-  --model ./saved_models/style-23/19_caffe_epoch_2_Tue_Dec_31_13:57:03_2019_0.5_20.0.model \
-  --output-image ./images/output-images/content-23-19caffe-9.jpg \
+  --content-image ./images/content-images/ostagram/content-3.jpg \
+  --model ./saved_models/candy/19_caffe_epoch_2_Tue_Dec_31_16:25:46_2019_50.0_1000.0.model \
+  --output-image ./images/output-images/content-3-19caffe-2.jpg \
   --cuda 0 \
   --output-size 1024
 
@@ -30,3 +31,7 @@ python neural_style/neural_style_vgg19_caffe.py eval \
   --output-image ./images/output-images/content-1-19caffe-10.jpg \
   --cuda 0 \
   --output-size 1024
+
+
+# ./saved_models/rain-princess/19_caffe_epoch_2_Tue_Dec_31_15:11:36_2019_0.5_10.0.model
+# ./saved_models/candy/19_caffe_epoch_2_Tue_Dec_31_15:13:43_2019_0.5_10.0.model

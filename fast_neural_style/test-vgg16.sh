@@ -1,12 +1,11 @@
 #!/bin/bash
 
 python neural_style/neural_style.py eval \
-  --content-image ./images/content-images/boys.jpg \
-  --model ./saved_models/0035/19_epoch_2_Thu_Dec_26_11:56:03_2019_100000.0_10000000000.0.model \
-  --output-image ./images/output-images/boys-16-0035-1.jpg \
+  --content-image ./images/content-images/ostagram/content-3.jpg \
+  --model ./saved_models/candy/16_epoch_2_Tue_Dec_31_17:20:26_2019_100000.0_10000000000.0.model \
+  --output-image ./images/output-images/content-3-19caffe-2.jpg \
   --cuda 0 \
-  --output-size 1024 \
-  --original-colors 0
+  --output-size 1024
 
 
 python neural_style/neural_style.py eval \

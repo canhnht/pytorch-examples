@@ -236,8 +236,11 @@ def stylize(args):
             if args.export_onnx:
                 assert args.export_onnx.endswith(
                     ".onnx"), "Export model file should end with .onnx"
+                inputs = ['images']
+                outputs = ['scores']
+                dynamic_axes = {'images': {0: 'batch'}, 'scores': {0: 'batch'}}
                 output = torch.onnx._export(
-                    style_model, content_image, args.export_onnx).cpu()
+                    style_model, content_image, args.export_onnx, verbose=True).cpu()
             else:
                 output = style_model(content_image).cpu()
     utils.save_image_vgg19(
