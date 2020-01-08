@@ -47,25 +47,26 @@ class SmallTransformerNet(torch.nn.Module):
     def __init__(self, alpha=0.5):
         super(SmallTransformerNet, self).__init__()
         # Initial convolution layers
-        self.conv1 = ConvLayer(3, alpha * 32, kernel_size=9, stride=1)
-        self.in1 = torch.nn.InstanceNorm2d(alpha * 32, affine=True)
-        self.conv2 = ConvLayer(alpha * 32, alpha * 64, kernel_size=3, stride=2)
-        self.in2 = torch.nn.InstanceNorm2d(alpha * 64, affine=True)
-        self.conv3 = ConvLayer(alpha * 64, alpha * 64,
+        self.conv1 = ConvLayer(3, int(alpha * 32), kernel_size=9, stride=1)
+        self.in1 = torch.nn.InstanceNorm2d(int(alpha * 32), affine=True)
+        self.conv2 = ConvLayer(
+            int(alpha * 32), int(alpha * 64), kernel_size=3, stride=2)
+        self.in2 = torch.nn.InstanceNorm2d(int(alpha * 64), affine=True)
+        self.conv3 = ConvLayer(int(alpha * 64), int(alpha * 64),
                                kernel_size=3, stride=2)
-        self.in3 = torch.nn.InstanceNorm2d(alpha * 64, affine=True)
+        self.in3 = torch.nn.InstanceNorm2d(int(alpha * 64), affine=True)
         # Residual layers
-        self.res1 = ResidualBlock(alpha * 64)
-        self.res2 = ResidualBlock(alpha * 64)
-        self.res3 = ResidualBlock(alpha * 64)
+        self.res1 = ResidualBlock(int(alpha * 64))
+        self.res2 = ResidualBlock(int(alpha * 64))
+        self.res3 = ResidualBlock(int(alpha * 64))
         # Upsampling Layers
         self.deconv1 = UpsampleConvLayer(
-            alpha * 64, alpha * 32, kernel_size=3, stride=1, upsample=2)
-        self.in4 = torch.nn.InstanceNorm2d(alpha * 32, affine=True)
+            int(alpha * 64), int(alpha * 32), kernel_size=3, stride=1, upsample=2)
+        self.in4 = torch.nn.InstanceNorm2d(int(alpha * 32), affine=True)
         self.deconv2 = UpsampleConvLayer(
-            alpha * 32, alpha * 32, kernel_size=3, stride=1, upsample=2)
-        self.in5 = torch.nn.InstanceNorm2d(alpha * 32, affine=True)
-        self.deconv3 = ConvLayer(alpha * 32, 3, kernel_size=9, stride=1)
+            int(alpha * 32), int(alpha * 32), kernel_size=3, stride=1, upsample=2)
+        self.in5 = torch.nn.InstanceNorm2d(int(alpha * 32), affine=True)
+        self.deconv3 = ConvLayer(int(alpha * 32), 3, kernel_size=9, stride=1)
         # Non-linearities
         self.relu = torch.nn.ReLU()
 
