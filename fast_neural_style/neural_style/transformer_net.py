@@ -77,8 +77,6 @@ class SmallTransformerNet(torch.nn.Module):
         y = self.res1(y)
         y = self.res2(y)
         y = self.res3(y)
-        y = self.res4(y)
-        y = self.res5(y)
         y = self.relu(self.in4(self.deconv1(y)))
         y = self.relu(self.in5(self.deconv2(y)))
         y = self.deconv3(y)
