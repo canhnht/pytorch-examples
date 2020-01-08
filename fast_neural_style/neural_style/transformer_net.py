@@ -60,7 +60,7 @@ class SmallTransformerNet(torch.nn.Module):
         self.res2 = ResidualBlock(int(alpha * 64))
         self.res3 = ResidualBlock(int(alpha * 64))
         self.res4 = ResidualBlock(int(alpha * 64))
-        self.res5 = ResidualBlock(int(alpha * 64))
+        # self.res5 = ResidualBlock(int(alpha * 64))
         # Upsampling Layers
         self.deconv1 = UpsampleConvLayer(
             int(alpha * 64), int(alpha * 32), kernel_size=3, stride=1, upsample=2)
@@ -80,7 +80,7 @@ class SmallTransformerNet(torch.nn.Module):
         y = self.res2(y)
         y = self.res3(y)
         y = self.res4(y)
-        y = self.res5(y)
+        # y = self.res5(y)
         y = self.relu(self.in4(self.deconv1(y)))
         y = self.relu(self.in5(self.deconv2(y)))
         y = self.deconv3(y)
