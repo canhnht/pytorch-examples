@@ -14,7 +14,7 @@ import torch.onnx
 from PIL import Image
 
 import utils
-from torch_transformer_net import TransformerNet
+from transformer_net import SmallTransformerNet
 from vgg import Vgg19_Caffe
 
 
@@ -113,7 +113,7 @@ def train(args):
     train_loader = DataLoader(
         train_dataset, batch_size=args.batch_size, num_workers=8, shuffle=True)
 
-    transformer = TransformerNet().to(device)
+    transformer = SmallTransformerNet().to(device)
     optimizer = Adam(transformer.parameters(), args.lr)
     mse_loss = torch.nn.MSELoss()
 
@@ -225,7 +225,7 @@ def stylize(args):
         output = stylize_onnx_caffe2(content_image, args)
     else:
         with torch.no_grad():
-            style_model = torch.jit.script(TransformerNet())
+            style_model = SmallTransformerNet()
             state_dict = torch.load(args.model)
             # remove saved deprecated running_* keys in InstanceNorm from the checkpoint
             for k in list(state_dict.keys()):

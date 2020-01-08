@@ -15,7 +15,7 @@ from PIL import Image
 
 import utils
 from transformer_net import TransformerNet
-from vgg import Vgg16, Vgg19
+from vgg import Vgg19_Caffe
 
 
 Image.MAX_IMAGE_PIXELS = 1000000000  # Support gigapixel images
@@ -104,27 +104,34 @@ def train(args):
         transforms.Resize(args.image_size),
         transforms.CenterCrop(args.image_size),
         transforms.ToTensor(),
-        transforms.Lambda(lambda x: x.mul(255))
+        transforms.Lambda(lambda x: x.mul(256)),
+        transforms.Lambda(lambda x: x[torch.LongTensor([2, 1, 0])]),
+        transforms.Normalize(
+            mean=[103.939, 116.779, 123.68], std=[1, 1, 1])
     ])
     train_dataset = datasets.ImageFolder(args.dataset, transform)
     train_loader = DataLoader(
-        train_dataset, batch_size=args.batch_size,
-        shuffle=True, num_workers=8)
+        train_dataset, batch_size=args.batch_size, num_workers=8, shuffle=True)
 
     transformer = TransformerNet().to(device)
     optimizer = Adam(transformer.parameters(), args.lr)
     mse_loss = torch.nn.MSELoss()
 
-    vgg = Vgg19(requires_grad=False).to(device)
+    vgg = Vgg19_Caffe(requires_grad=False).to(device)
     style_transform = transforms.Compose([
         transforms.ToTensor(),
-        transforms.Lambda(lambda x: x.mul(255))
+        transforms.Lambda(lambda x: x.mul(256)),
+        transforms.Lambda(lambda x: x[torch.LongTensor([2, 1, 0])]),
+        transforms.Normalize(
+            mean=[103.939, 116.779, 123.68], std=[1, 1, 1])
     ])
     style = utils.load_image(args.style_image, size=args.style_size)
     style = style_transform(style)
     style = style.repeat(args.batch_size, 1, 1, 1).to(device)
 
-    features_style, features_content = vgg(utils.normalize_batch(style))
+    print('batch styleeeeee', len(style))
+    # features_style = vgg(utils.normalize_batch(style))
+    features_style, features_content = vgg(style)
     print('featuressssssss', features_style._fields, features_content._fields)
     gram_style = [utils.gram_matrix(y) for y in features_style]
 
@@ -134,7 +141,7 @@ def train(args):
         agg_content_loss = 0.
         agg_style_loss = 0.
         count = 0
-        max_batchs = 1000
+        max_batchs = 2000
         for batch_id, (x, _) in enumerate(train_loader):
             if batch_id > max_batchs:
                 break
@@ -145,8 +152,8 @@ def train(args):
             x = x.to(device)
             y = transformer(x)
 
-            y = utils.normalize_batch(y)
-            x = utils.normalize_batch(x)
+            # y = utils.normalize_batch(y)
+            # x = utils.normalize_batch(x)
 
             features_style_y, features_content_y = vgg(y)
             features_style_x, features_content_x = vgg(x)
@@ -170,8 +177,8 @@ def train(args):
             agg_style_loss += style_loss.item()
 
             if (batch_id + 1) % args.log_interval == 0:
-                mesg = "{}\tEpoch {}:\t[{}/{}]\tcontent: {:.6f}\tstyle: {:.6f}\ttotal: {:.6f}".format(
-                    time.ctime(), e + 1, count, len(train_dataset),
+                mesg = "{}\tEpoch {}, Batch {}:\t[{}/{}]\tcontent: {:.6f}\tstyle: {:.6f}\ttotal: {:.6f}".format(
+                    time.ctime(), e + 1, batch_id + 1, count, len(train_dataset),
                     agg_content_loss / (batch_id + 1),
                     agg_style_loss / (batch_id + 1),
                     (agg_content_loss + agg_style_loss) / (batch_id + 1)
@@ -189,7 +196,7 @@ def train(args):
 
     # save model
     transformer.eval().cpu()
-    save_model_filename = "19_epoch_" + str(args.epochs) + "_" + str(time.ctime()).replace(' ', '_') + "_" + str(
+    save_model_filename = "19_caffe_epoch_" + str(args.epochs) + "_" + str(time.ctime()).replace(' ', '_') + "_" + str(
         args.content_weight) + "_" + str(args.style_weight) + ".model"
     save_model_path = os.path.join(args.save_model_dir, save_model_filename)
     torch.save(transformer.state_dict(), save_model_path)
@@ -203,11 +210,13 @@ def stylize(args):
     content_image_input = utils.load_image(
         args.content_image,
         size=args.output_size,
-        scale=args.content_scale,
-    )
+        scale=args.content_scale)
     content_transform = transforms.Compose([
         transforms.ToTensor(),
-        transforms.Lambda(lambda x: x.mul(255))
+        transforms.Lambda(lambda x: x.mul(256)),
+        transforms.Lambda(lambda x: x[torch.LongTensor([2, 1, 0])]),
+        transforms.Normalize(
+            mean=[103.939, 116.779, 123.68], std=[1, 1, 1])
     ])
     content_image = content_transform(content_image_input)
     content_image = content_image.unsqueeze(0).to(device)
@@ -216,22 +225,25 @@ def stylize(args):
         output = stylize_onnx_caffe2(content_image, args)
     else:
         with torch.no_grad():
-            style_model = TransformerNet()
+            style_model = torch.jit.script(TransformerNet())
             state_dict = torch.load(args.model)
             # remove saved deprecated running_* keys in InstanceNorm from the checkpoint
             for k in list(state_dict.keys()):
                 if re.search(r'in\d+\.running_(mean|var)$', k):
                     del state_dict[k]
             style_model.load_state_dict(state_dict)
-            style_model.to(device)
+            style_model.eval().to(device)
             if args.export_onnx:
                 assert args.export_onnx.endswith(
                     ".onnx"), "Export model file should end with .onnx"
+                inputs = ['images']
+                outputs = ['scores']
+                dynamic_axes = {'images': {0: 'batch'}, 'scores': {0: 'batch'}}
                 output = torch.onnx._export(
-                    style_model, content_image, args.export_onnx).cpu()
+                    style_model, content_image, args.export_onnx, verbose=True).cpu()
             else:
                 output = style_model(content_image).cpu()
-    utils.save_image(
+    utils.save_image_vgg19(
         args.output_image,
         output[0],
         args.original_colors,
