@@ -44,7 +44,7 @@ class TransformerNet(torch.nn.Module):
 
 
 class SmallTransformerNet(torch.nn.Module):
-    def __init__(self, alpha=1.25):
+    def __init__(self, alpha=1):
         super(SmallTransformerNet, self).__init__()
         # Initial convolution layers
         self.conv1 = ConvLayer(3, int(alpha * 32), kernel_size=9, stride=1)
