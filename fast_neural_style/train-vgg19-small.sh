@@ -29,16 +29,16 @@ CUDA_VISIBLE_DEVICES=0 python neural_style/neural_style_vgg19_small.py train \
 
 CUDA_VISIBLE_DEVICES=0 python neural_style/neural_style_vgg19_small.py train \
   --dataset ./dataset/coco \
-  --style-image ./images/style-images/photoac/0030.jpg \
+  --style-image ./images/style-images/photoac/0004.jpg \
   --style-size 1024 \
-  --save-model-dir ./saved_models/0030 \
-  --checkpoint-model-dir ./saved_checkpoint/0030 \
+  --save-model-dir ./saved_models/0004 \
+  --checkpoint-model-dir ./saved_checkpoint/0004 \
   --epochs 2 \
   --batch-size 12 \
   --cuda 1 \
   --log-interval 100 \
   --content-weight 0.5 \
-  --style-weight 50
+  --style-weight 20
 
 CUDA_VISIBLE_DEVICES=0 python neural_style/neural_style_vgg19_small.py train \
   --dataset ./dataset/coco \
