@@ -36,4 +36,4 @@ python neural_style/neural_style_vgg19_small.py eval \
 # ./saved_models/candy/19_caffe_epoch_2_Tue_Dec_31_15:13:43_2019_0.5_10.0.model
 
 
-aws s3 cp ./saved_models/0004/19_small_epoch_2_Thu_Jan__9_15:09:46_2020_0.5_20.0.model s3://ac-style-transfer/models/0004-vgg19-small.model --acl public-read
+aws s3 cp ./saved_models/0030/19_small_epoch_2_Thu_Jan__9_17:15:24_2020_0.5_30.0.model s3://ac-style-transfer/models/0030-vgg19-small.model --acl public-read
